@@ -47,5 +47,16 @@ public List<List<Cell>> getBoard() {
 public void setBoard(List<List<Cell>> board) {
 	this.board = board;
 }
+public boolean completelyFilled() {
+	int i,j;
+	for(i=0;i<board.size();i++) {
+		for(j=0;j<board.size();j++) {
+			if(board.get(i).get(j).getState().equals(CellState.EMPTY)) {
+				return false;
+			}
+		}
+	}
+	return true;
+}
 
 }

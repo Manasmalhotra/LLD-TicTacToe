@@ -1,7 +1,9 @@
 package Models;
 
 import java.util.ArrayList;
+import java.util.InputMismatchException;
 import java.util.List;
+import java.util.Scanner;
 
 import exceptions.InvalidGameException;
 import strategies.GameWinnerStrategy;
@@ -133,7 +135,22 @@ public void makeNextMove() {
 	int row;
 	int col;
 	while(true) {
+	try {
 	move=playerToMove.decideMove(board);
+	}
+	catch(InputMismatchException e) {
+		System.out.println("Do you want to quit the game? Enter y/n.");
+		Scanner sc=new Scanner(System.in);
+		String quitDecision=sc.next();
+		if(quitDecision=="n") {
+			System.out.println("Please enter your move again");
+		}
+		else {
+			state=GameStatus.ENDED;
+			return;
+		}
+		
+	}
 	c=move.getCell();
 	row=c.getRow();
 	col=c.getCol();
@@ -166,6 +183,10 @@ int row=move.getCell().getRow();
 int col=move.getCell().getCol();
 board.getBoard().get(row).get(col).setState(CellState.EMPTY);
 nextPlayerIndex=(nextPlayerIndex-1)%players.size();	
+}
+
+public boolean completelyFilledBoard() {
+	return board.completelyFilled();
 }
 
 }

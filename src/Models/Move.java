@@ -3,7 +3,7 @@ package Models;
 public class Move {
   Player player;
   Cell cell;
-  Move(Player p, Cell c){
+  public Move(Player p, Cell c){
 	  this.player=p;
 	  this.cell=c;
   }

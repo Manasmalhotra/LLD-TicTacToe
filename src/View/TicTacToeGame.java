@@ -9,6 +9,7 @@ import Models.BotDifficultyLevel;
 import Models.Game;
 import Models.GameStatus;
 import Models.Player;
+import Models.PlayerType;
 import controllers.GameController;
 import exceptions.InvalidGameException;
 
@@ -41,33 +42,25 @@ public class TicTacToeGame {
 	   }
 	   
 	   List<Player>Players=new ArrayList<>();
-	   for(int i=1;i<=numberOfPlayers;i++) {
-		   System.out.println("Please enter the name of Player "+i);
-		   String name=sc.next();
-		   System.out.println("Please enter the symbol of the Player "+i);
-		   char symbol=sc.next().charAt(0);
-		   Player p=new Player(name,symbol);
-		   Players.add(p);
-	   }
+	   int playerCount=1;
 	   if(botRequired.equals("y")) {
-		   System.out.println("Please enter the name of the bot");
+		   System.out.println("Please enter the name of the bot(Player 1)");
 		   String name=sc.next();
 		   System.out.println("Please enter the symbol of the bot");
 		   char symbol=sc.next().charAt(0);
-		   System.out.println("Please enter the level of the bot");
-		   String level=sc.next();
-		   BotDifficultyLevel l;
-		   if(level.equalsIgnoreCase(BotDifficultyLevel.EASY.getName())) {
-			   l=BotDifficultyLevel.EASY;
-		   }
-		   else if(level.equalsIgnoreCase(BotDifficultyLevel.MEDIUM.getName())) {
-			   l=BotDifficultyLevel.MEDIUM;
-		   }
-		   else {
-			   l=BotDifficultyLevel.HARD;
-		   }
-		   Bot bot=new Bot(name,symbol,l);
+		   Bot bot=new Bot(name,symbol,BotDifficultyLevel.EASY);
 		   Players.add(bot);
+		   playerCount+=1;
+	   }
+	   
+	   for(int i=1;i<=numberOfPlayers;i++) {
+		   System.out.println("Please enter the name of Player "+playerCount);
+		   String name=sc.next();
+		   System.out.println("Please enter the symbol of the Player "+i);
+		   char symbol=sc.next().charAt(0);
+		   Player p=new Player(name,symbol,PlayerType.HUMAN);
+		   Players.add(p);
+		   playerCount++;
 	   }
 	   
 	  
@@ -75,7 +68,7 @@ public class TicTacToeGame {
 	   while(game.getState()==GameStatus.IN_PROGRESS) {
 		     System.out.println("This is the current board");
 		     gameController.displayboard(game);
-		     System.out.println("This is player"+Integer.toString(gameController.getNextPlayer(game))+"'s turn");
+		     System.out.println("This is player"+Integer.toString(gameController.getNextPlayer(game)+1)+"'s turn");
 		     System.out.println("Do you want to undo ? y/n");
 	            String input = sc.next();
 
@@ -86,9 +79,19 @@ public class TicTacToeGame {
 	            }
 	        }
 	   
-	        System.out.println("The game has ended, Result is:");
 	        if (game.getState().equals(GameStatus.ENDED)) {
+	            try {
+	            System.out.println("The game has ended, Result is:");
 	            System.out.println("Winner is : " + gameController.getWinner(game).getName());
+	            }
+	            catch(Exception e){
+	                if(gameController.isDraw(game)) {
+	                	System.out.println("The game ended in a draw!");
+	                }
+	                else {
+	                	System.out.println("You have quit the game successfully thanks for playing!");
+	                }
+	            }
 	        }
 	   }
 	   

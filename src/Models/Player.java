@@ -1,5 +1,6 @@
 package Models;
 
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class Player {
@@ -7,9 +8,10 @@ public class Player {
    char symbol;
    PlayerType type;
    
-   public Player(String name,char symbol){
+   public Player(String name,char symbol,PlayerType type){
 	   this.name=name;
        this.symbol=symbol;	   
+       this.type=type;
    }
 
 public String getName() {
@@ -36,7 +38,7 @@ public void setType(PlayerType type) {
 	this.type = type;
 }
 
-public Move decideMove(Board board) {
+public Move decideMove(Board board) throws InputMismatchException {
 	Scanner sc=new Scanner(System.in);
 	System.out.println("Please enter the row of the cell:");
 	int row=sc.nextInt();

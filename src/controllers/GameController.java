@@ -38,4 +38,9 @@ public class GameController {
 		return game.getNextPlayerIndex();
 	}
 
+	public boolean isDraw(Game game) {
+		
+		return game.completelyFilledBoard();
+	}
+
 }
